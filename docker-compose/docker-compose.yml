@@ -28,13 +28,13 @@ services:
 
   # pgAdmin Service
   pgadmin:
-    image: dpage/pgadmin4        # pgAdmin image
+    image: dpage/pgadmin4:latest        # pgAdmin image
     container_name: pgadmin
     ports:
       - "5050:80"                # Expose pgAdmin on port 5050
     environment:
-      PGADMIN_DEFAULT_EMAIL: admin@pgadmin.com  # Default email for pgAdmin
-      PGADMIN_DEFAULT_PASSWORD: admin          # Default password for pgAdmin
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com  # Default email for pgAdmin
+      PGADMIN_DEFAULT_PASSWORD: admin         # Default password for pgAdmin
     depends_on:
       - postgres                 # Ensure PostgreSQL starts before pgAdmin
     volumes:
