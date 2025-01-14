@@ -26,7 +26,7 @@ export class SQSService {
             console.log('Message published to SQS:', result.MessageId);
             return result.MessageId;
         } catch (error: any) {
-            console.error(`Error publishing message to SQS [${error.code}]:`, error.message);
+            console.log(`Error publishing message to SQS [${error.code}]:`, error.message);
             throw new Error(`Failed to publish message: ${error.message}`);
         }
     }
@@ -55,7 +55,7 @@ export class SQSService {
             console.log(`Received ${result.Messages.length} messages from SQS.`);
             return result.Messages;
         } catch (error: any) {
-            console.error(`Error receiving messages from SQS [${error.code}]:`, error.message);
+            console.log(`Error receiving messages from SQS [${error.code}]:`, error.message);
             throw new Error(`Failed to receive messages: ${error.message}`);
         }
     }
@@ -75,7 +75,7 @@ export class SQSService {
             await this.sqs.deleteMessage(params).promise();
             console.log('Message deleted from SQS:', receiptHandle);
         } catch (error: any) {
-            console.error(`Error deleting message from SQS [${error.code}]:`, error.message);
+            console.log(`Error deleting message from SQS [${error.code}]:`, error.message);
             throw new Error(`Failed to delete message: ${error.message}`);
         }
     }

@@ -26,7 +26,7 @@ consumer
     console.log("SQS Consumer started.");
   })
   .catch((err) => {
-    console.error("Error starting SQS Consumer:", err);
+    console.log("Error starting SQS Consumer:", err);
   });
 
 // Start the server

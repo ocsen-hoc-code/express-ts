@@ -37,11 +37,11 @@ export class SQSConsumer {
                             }
                         }
                     } catch (err) {
-                        console.error('Error processing message:', err);
+                        console.log('Error processing message:', err);
                     }
                 }
             } catch (err) {
-                console.error('Error receiving messages:', err);
+                console.log('Error receiving messages:', err);
                 await new Promise((resolve) => setTimeout(resolve, 5000)); // Retry after delay
             }
         }

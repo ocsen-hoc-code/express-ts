@@ -44,7 +44,7 @@ router.post('/publish', validatePublish, async (req: Request, res: Response): Pr
             message: 'Message published successfully!',
         });
     } catch (error: any) {
-        console.error("Error in /publish route:", error.message);
+        console.log("Error in publish route:", error.message);
         res.status(500).json({
           error: "Failed to publish message",
           details: error.message,
