@@ -2,6 +2,8 @@ import { Router, Request, Response } from 'express';
 import container from '../config/inversify.config';
 import { SQSService } from '../services/sqs.service';
 import TYPES from '../types';
+import { validatePublish } from '../validators/publishValidator';
+import { validationResult } from 'express-validator';
 
 const router = Router();
 const queueUrl =  process.env.SQS_QUEUE_URL;
@@ -11,14 +13,17 @@ const messageGroupId =  'ocsenGroup';
 const messageDeduplicationId =  'ocsenDeduplication';
 
 // POST /api/sqs/publish
-router.post('/publish', async (req: Request, res: Response): Promise<void> => {
-    const { message } = req.body;
+router.post('/publish', validatePublish, async (req: Request, res: Response): Promise<void> => {
+
+    const errors = validationResult(req);
 
     // Validate the message body
-    if (!message) {
-     res.status(400).json({ error: 'Message is required' });
-     return;
+    if (!errors.isEmpty()) {
+        res.status(400).json({ errors: errors.array() });
+        return;
     }
+
+    const { message } = req.body;
 
     try {
         // Publish the message to SQS
@@ -39,8 +44,11 @@ router.post('/publish', async (req: Request, res: Response): Promise<void> => {
             message: 'Message published successfully!',
         });
     } catch (error: any) {
-        console.error('Error publishing message:', error);
-        res.status(500).json({ error: 'Failed to publish message', details: error.message });
+        console.error("Error in /publish route:", error.message);
+        res.status(500).json({
+          error: "Failed to publish message",
+          details: error.message,
+        });
     }
 });
 
