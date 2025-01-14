@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  # ElasticMQ Service
+  elasticmq:
+    image: softwaremill/elasticmq
+    container_name: elasticmq
+    ports:
+      - "9324:9324"              # ElasticMQ SQS endpoint
+      - "9325:9325"              # ElasticMQ management UI
+    volumes:
+      - ./elasticmq.conf:/opt/elasticmq.conf  # Mount the custom config file
+    command: ["-Dconfig.file=/opt/elasticmq.conf"]  # Use custom config file
+
+  # PostgreSQL Service
+  postgres:
+    image: postgres:15           # PostgreSQL version
+    container_name: postgres
+    ports:
+      - "5432:5432"              # PostgreSQL port
+    environment:
+      POSTGRES_USER: admin       # Username for PostgreSQL
+      POSTGRES_PASSWORD: admin   # Password for PostgreSQL
+      POSTGRES_DB: ocsen_db      # Default database name
+    volumes:
+      - postgres_data:/var/lib/postgresql/data # Persistent data storage
+      - ./initdb:/docker-entrypoint-initdb.d   # Initialization scripts
+
+  # pgAdmin Service
+  pgadmin:
+    image: dpage/pgadmin4        # pgAdmin image
+    container_name: pgadmin
+    ports:
+      - "5050:80"                # Expose pgAdmin on port 5050
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@pgadmin.com  # Default email for pgAdmin
+      PGADMIN_DEFAULT_PASSWORD: admin          # Default password for pgAdmin
+    depends_on:
+      - postgres                 # Ensure PostgreSQL starts before pgAdmin
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin # Persistent storage for pgAdmin settings
+
+volumes:
+  postgres_data:
+  pgadmin_data:
