@@ -11,11 +11,13 @@
   },
   "dependencies": {
     "@types/chai": "^5.0.1",
+    "@types/pg": "^8.11.10",
     "chai": "^5.1.2",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "express-validator": "^7.2.1",
     "inversify": "^6.2.1",
+    "pg": "^8.13.1",
     "reflect-metadata": "^0.2.2"
   },
   "devDependencies": {
