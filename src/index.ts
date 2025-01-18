@@ -3,10 +3,11 @@ import { config } from "dotenv";
 import sqsRouter from "./routers/sqsRouter";
 import { sqsMessageHandler } from "./handlers/sqs.message.handler";
 import { SQSConsumer } from "./consumers/sqs.consumer";
-import container from './config/inversify.config';
+import container from "./config/inversify.config";
 import { SQSService } from "./services/sqs.service";
 import TYPES from "./types";
 import testRouter from "./routers/testRouter";
+import { AppDataSource } from "./config/ormconfig";
 
 config();
 const PORT = process.env.PORT || 3000;
@@ -29,8 +30,11 @@ consumer
     console.log("Error starting SQS Consumer:", err);
   });
 
-// Start the server
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
-
+AppDataSource.initialize()
+  .then(() => {
+    // Start the server
+    app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
+    });
+  })
+  .catch((error) => console.error("Database connection failed:", error));

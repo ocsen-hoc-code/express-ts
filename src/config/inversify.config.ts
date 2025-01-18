@@ -5,6 +5,8 @@ import config from './config';
 import { PgConnection } from './pgConnection';
 import { MessagesRepository } from '../repositories/messages.repository';
 import { MessagesService } from '../services/messages.service';
+import { UserService } from '../services/user.services';
+import { UserRepository } from '../repositories/user.repository';
 
 const container = new Container();
 
@@ -29,5 +31,10 @@ container.bind<MessagesRepository>(TYPES.MessagesRepository).to(MessagesReposito
 
 // Bind MessagesService
 container.bind<MessagesService>(TYPES.MessagesService).to(MessagesService).inSingletonScope();
+
+// Bind UserRepository
+container.bind<UserRepository>(TYPES.UserRepository).to(UserRepository);
+// Bind UserService
+container.bind<UserService>(TYPES.UserService).to(UserService);
 
 export default container;
